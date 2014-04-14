@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ObjectCloner.Helpers;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,25 +10,23 @@ namespace ObjectCloner
 {
     public class Cloner
     {
-        private readonly IMetaDataCollector collector;
-        private readonly CloningMetaDataCollection metaData;
+        private readonly IMetadataCollector collector;
+        private readonly CloningMetadataCollection metadata;
+        private readonly IDictionary<object, object> clonedObjects = new Dictionary<object, object>();
 
-        public Cloner(IMetaDataCollector collector)
+        public Cloner(IMetadataCollector collector)
         {
-            if (collector == null)
-            {
-                throw new ArgumentNullException("collector");
-            }
+            ArgumentHelper.ThrowExceptionIfNull(collector, "collector");
 
             this.collector = collector;
-            this.metaData = new CloningMetaDataCollection(collector);
+            this.metadata = new CloningMetadataCollection(collector);
         }
 
-        public CloningMetaDataCollection MetaData
+        public CloningMetadataCollection Metadata
         {
             get
             {
-                return this.metaData;
+                return this.metadata;
             }
         }
 
@@ -36,38 +36,42 @@ namespace ObjectCloner
 
             if (obj != null)
             {
-                Type sourceType = obj.GetType();
-
-                CloningMetaData typeMetaData = this.MetaData[sourceType];
-
-                if (typeMetaData.Clonable)
+                if (!this.clonedObjects.TryGetValue(obj, out clone))
                 {
-                    IDictionary<string, object> clonedPropertyValues = CloneProperties(obj, typeMetaData);
+                    Type sourceType = obj.GetType();
 
-                    object newObject = CreateNewInstance(typeMetaData);
+                    CloningMetadata typeMetadata = this.Metadata[sourceType];
 
-                    SetNewPropertyValues(clonedPropertyValues, newObject);
+                    ThrowExceptionIfNotClonable(typeMetadata);
 
-                    return newObject;
-                }
-                else
-                {
-                    throw new InvalidOperationException(string.Format("The type {0} is not clonable (e.g. the MetaDataCollector (of type {1}) could not provider any meta data)", sourceType, this.collector.GetType()));
+                    clone = CreateNewInstance(typeMetadata);
+                    this.clonedObjects.Add(obj, clone);
+
+                    IDictionary<string, object> clonedPropertyValues = CloneProperties(obj, typeMetadata);
+                    SetNewPropertyValues(clonedPropertyValues, clone);
                 }
             }
 
             return clone;
         }
 
-        private IDictionary<string, object> CloneProperties(object obj, CloningMetaData typeMetaData)
+        private void ThrowExceptionIfNotClonable(CloningMetadata typeMetadata)
+        {
+            if (!typeMetadata.Clonable)
+            {
+                throw new InvalidOperationException(string.Format("The type {0} is not clonable (e.g. the MetadataCollector (of type {1}) could not provider any metadata)", typeMetadata.TargetType, this.collector.GetType()));
+            }
+        }
+
+        private IDictionary<string, object> CloneProperties(object obj, CloningMetadata typeMetadata)
         {
             IDictionary<string, object> clonedPropertyValues = new Dictionary<string, object>();
 
-            foreach (string propertyName in typeMetaData.GetPropertyNames())
+            foreach (string propertyName in typeMetadata.GetPropertyNames())
             {
-                CloningPropertyMetaData propertyMetaData = typeMetaData.GetMetaDataForProperty(propertyName);
+                CloningPropertyMetadata propertyMetadata = typeMetadata.GetMetaDataForProperty(propertyName);
 
-                object clonedValue = propertyMetaData.Action.Clone(this, propertyName, obj);
+                object clonedValue = propertyMetadata.Action.Clone(this, propertyName, obj);
 
                 clonedPropertyValues.Add(propertyName, clonedValue);
             }
@@ -75,11 +79,9 @@ namespace ObjectCloner
             return clonedPropertyValues;
         }
 
-        private static object CreateNewInstance(CloningMetaData typeMetaData)
+        private static object CreateNewInstance(CloningMetadata typeMetadata)
         {
-            object newValue = Activator.CreateInstance(typeMetaData.TargetType);
-
-            return newValue;
+            return typeMetadata.Factory.CreateNew(typeMetadata);
         }
 
         private static void SetNewPropertyValues(IDictionary<string, object> clonedPropertyValues, object newValue)

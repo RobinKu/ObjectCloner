@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ObjectCloner.Helpers;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,6 @@ namespace ObjectCloner.Actions
             return newList;
         }
 
-        protected abstract object GetItemValue(Cloner cloner, IList originelList, int index);
+        protected abstract object GetItemValue(Cloner cloner, IList originalList, int index);
     }
 }

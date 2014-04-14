@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace ObjectCloner
+namespace ObjectCloner.Helpers
 {
     internal static class ReflectionHelper
     {

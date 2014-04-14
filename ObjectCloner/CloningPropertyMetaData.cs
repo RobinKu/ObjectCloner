@@ -5,12 +5,12 @@ using System.Text;
 
 namespace ObjectCloner
 {
-    public class CloningPropertyMetaData
+    public class CloningPropertyMetadata
     {
         private readonly string propertyName;
         private readonly ICloningAction action;
 
-        public CloningPropertyMetaData(string propertyName, ICloningAction action)
+        public CloningPropertyMetadata(string propertyName, ICloningAction action)
         {
             this.propertyName = propertyName;
             this.action = action;

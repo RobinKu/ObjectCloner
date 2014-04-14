@@ -1,37 +1,35 @@
-﻿using System;
+﻿using ObjectCloner.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace ObjectCloner
 {
-    public class CloningMetaDataCollection
+    public class CloningMetadataCollection
     {
-        private readonly IMetaDataCollector collector;
-        private readonly IDictionary<Type, CloningMetaData> metaDataPerType = new Dictionary<Type, CloningMetaData>();
+        private readonly IMetadataCollector collector;
+        private readonly IDictionary<Type, CloningMetadata> metadataPerType = new Dictionary<Type, CloningMetadata>();
 
-        public CloningMetaDataCollection(IMetaDataCollector collector)
+        public CloningMetadataCollection(IMetadataCollector collector)
         {
-            if (collector == null)
-            {
-                throw new ArgumentNullException("collector");
-            }
+            ArgumentHelper.ThrowExceptionIfNull(collector, "collector");
 
             this.collector = collector;
         }
 
-        public CloningMetaData this[Type type]
+        public CloningMetadata this[Type type]
         {
             get
             {
-                CloningMetaData metaData;
+                CloningMetadata metadata;
 
-                if (!this.metaDataPerType.TryGetValue(type, out metaData))
+                if (!this.metadataPerType.TryGetValue(type, out metadata))
                 {
-                    metaData = this.collector.CreateMetaDataForType(type);
+                    metadata = this.collector.CreateMetadataForType(type);
                 }
 
-                return metaData;
+                return metadata;
             }
         }
     }

@@ -5,11 +5,11 @@ using System.Text;
 
 namespace ObjectCloner
 {
-    public interface IMetaDataCollector
+    public interface IMetadataCollector
     {
-        CloningMetaData CreateMetaDataForType(Type type);
+        CloningMetadata CreateMetadataForType(Type type);
 
-        CloningPropertyMetaData CreateMetaDataForProperty(Type type, string propertyName);
+        CloningPropertyMetadata CreateMetadataForProperty(Type type, string propertyName);
 
         IEnumerable<string> GetPropertyNames(Type type);
     }

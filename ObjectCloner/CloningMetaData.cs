@@ -1,29 +1,28 @@
-﻿using System;
+﻿using ObjectCloner.Helpers;
+using ObjectCloner.ObjectCreation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
 namespace ObjectCloner
 {
-    public class CloningMetaData
+    public class CloningMetadata
     {
-        private readonly IMetaDataCollector collector;
+        private readonly IMetadataCollector collector;
         private readonly Type type;
-        private readonly IDictionary<string, CloningPropertyMetaData> properties = new Dictionary<string, CloningPropertyMetaData>();
+        private readonly IDictionary<string, CloningPropertyMetadata> properties = new Dictionary<string, CloningPropertyMetadata>();
+        private readonly IFactory factory;
         private bool? clonable;
 
-        public CloningMetaData(Type type, IMetaDataCollector collector)
+        public CloningMetadata(Type type, IFactory factory, IMetadataCollector collector)
         {
-            if (type == null)
-            {
-                throw new ArgumentNullException("type");
-            }
-            else if (collector == null)
-            {
-                throw new ArgumentNullException("collector");
-            }
+            ArgumentHelper.ThrowExceptionIfNull(type, "type");
+            ArgumentHelper.ThrowExceptionIfNull(factory, "factory");
+            ArgumentHelper.ThrowExceptionIfNull(collector, "collector");
 
             this.type = type;
+            this.factory = factory;
             this.collector = collector;
         }
 
@@ -32,6 +31,14 @@ namespace ObjectCloner
             get
             {
                 return this.type;
+            }
+        }
+
+        public IFactory Factory
+        {
+            get
+            {
+                return this.factory;
             }
         }
 
@@ -54,13 +61,13 @@ namespace ObjectCloner
             }
         }
 
-        public CloningPropertyMetaData GetMetaDataForProperty(string propertyName)
+        public CloningPropertyMetadata GetMetaDataForProperty(string propertyName)
         {
-            CloningPropertyMetaData metaData;
+            CloningPropertyMetadata metaData;
 
             if (!this.properties.TryGetValue(propertyName, out metaData))
             {
-                metaData = this.collector.CreateMetaDataForProperty(this.type, propertyName);
+                metaData = this.collector.CreateMetadataForProperty(this.type, propertyName);
 
                 this.properties.Add(propertyName, metaData);
             }
