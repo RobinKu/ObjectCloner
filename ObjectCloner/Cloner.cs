@@ -34,22 +34,19 @@ namespace ObjectCloner
         {
             object clone = null;
 
-            if (obj != null)
+            if (obj != null && !this.clonedObjects.TryGetValue(obj, out clone))
             {
-                if (!this.clonedObjects.TryGetValue(obj, out clone))
-                {
-                    Type sourceType = obj.GetType();
+                Type sourceType = obj.GetType();
 
-                    CloningMetadata typeMetadata = this.Metadata[sourceType];
+                CloningMetadata typeMetadata = this.Metadata[sourceType];
 
-                    ThrowExceptionIfNotClonable(typeMetadata);
+                ThrowExceptionIfNotClonable(typeMetadata);
 
-                    clone = CreateNewInstance(typeMetadata);
-                    this.clonedObjects.Add(obj, clone);
+                clone = CreateNewInstance(typeMetadata);
+                this.clonedObjects.Add(obj, clone);
 
-                    IDictionary<string, object> clonedPropertyValues = CloneProperties(obj, typeMetadata);
-                    SetNewPropertyValues(clonedPropertyValues, clone);
-                }
+                IDictionary<string, object> clonedPropertyValues = CloneProperties(obj, typeMetadata);
+                SetNewPropertyValues(clonedPropertyValues, clone);
             }
 
             return clone;
