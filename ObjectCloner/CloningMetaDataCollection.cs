@@ -9,7 +9,7 @@ namespace ObjectCloner
     public class CloningMetadataCollection
     {
         private readonly IMetadataCollector collector;
-        private readonly IDictionary<Type, CloningMetadata> metadataPerType = new Dictionary<Type, CloningMetadata>();
+        private readonly IDictionary<Type, CloningTypeMetadata> metadataPerType = new Dictionary<Type, CloningTypeMetadata>();
 
         public CloningMetadataCollection(IMetadataCollector collector)
         {
@@ -18,19 +18,16 @@ namespace ObjectCloner
             this.collector = collector;
         }
 
-        public CloningMetadata this[Type type]
+        public CloningTypeMetadata GetMetadataForType(Type type)
         {
-            get
+            CloningTypeMetadata metadata;
+
+            if (!this.metadataPerType.TryGetValue(type, out metadata))
             {
-                CloningMetadata metadata;
-
-                if (!this.metadataPerType.TryGetValue(type, out metadata))
-                {
-                    metadata = this.collector.CreateMetadataForType(type);
-                }
-
-                return metadata;
+                metadata = this.collector.CreateMetadataForType(type);
             }
+
+            return metadata;
         }
     }
 }

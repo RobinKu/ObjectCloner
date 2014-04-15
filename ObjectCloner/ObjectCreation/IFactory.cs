@@ -7,6 +7,6 @@ namespace ObjectCloner.ObjectCreation
 {
     public interface IFactory
     {
-        object CreateNew(CloningMetadata metadata);
+        object CreateNew(CloningTypeMetadata metadata);
     }
 }

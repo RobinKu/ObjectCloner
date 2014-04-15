@@ -42,8 +42,9 @@
     <Compile Include="Actions\CloneCollectionCloningAction.cs" />
     <Compile Include="Actions\CloneCollectionItemsCloneAction.cs" />
     <Compile Include="Actions\CloneValueCloningAction.cs" />
+    <Compile Include="Actions\StaticValueAction.cs" />
     <Compile Include="Cloner.cs" />
-    <Compile Include="CloningMetadata.cs" />
+    <Compile Include="CloningTypeMetadata.cs" />
     <Compile Include="CloningMetadataCollection.cs" />
     <Compile Include="CloningPropertyMetadata.cs" />
     <Compile Include="Helpers\ArgumentHelper.cs" />

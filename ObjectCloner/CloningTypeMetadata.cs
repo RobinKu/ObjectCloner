@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ObjectCloner
 {
-    public class CloningMetadata
+    public class CloningTypeMetadata
     {
         private readonly IMetadataCollector collector;
         private readonly Type type;
@@ -15,7 +15,7 @@ namespace ObjectCloner
         private readonly IFactory factory;
         private bool? clonable;
 
-        public CloningMetadata(Type type, IFactory factory, IMetadataCollector collector)
+        public CloningTypeMetadata(Type type, IFactory factory, IMetadataCollector collector)
         {
             ArgumentHelper.ThrowExceptionIfNull(type, "type");
             ArgumentHelper.ThrowExceptionIfNull(factory, "factory");

@@ -38,7 +38,7 @@ namespace ObjectCloner
             {
                 Type sourceType = obj.GetType();
 
-                CloningMetadata typeMetadata = this.Metadata[sourceType];
+                CloningTypeMetadata typeMetadata = this.Metadata.GetMetadataForType(sourceType);
 
                 ThrowExceptionIfNotClonable(typeMetadata);
 
@@ -52,7 +52,7 @@ namespace ObjectCloner
             return clone;
         }
 
-        private void ThrowExceptionIfNotClonable(CloningMetadata typeMetadata)
+        private void ThrowExceptionIfNotClonable(CloningTypeMetadata typeMetadata)
         {
             if (!typeMetadata.Clonable)
             {
@@ -60,7 +60,7 @@ namespace ObjectCloner
             }
         }
 
-        private IDictionary<string, object> CloneProperties(object obj, CloningMetadata typeMetadata)
+        private IDictionary<string, object> CloneProperties(object obj, CloningTypeMetadata typeMetadata)
         {
             IDictionary<string, object> clonedPropertyValues = new Dictionary<string, object>();
 
@@ -76,7 +76,7 @@ namespace ObjectCloner
             return clonedPropertyValues;
         }
 
-        private static object CreateNewInstance(CloningMetadata typeMetadata)
+        private static object CreateNewInstance(CloningTypeMetadata typeMetadata)
         {
             return typeMetadata.Factory.CreateNew(typeMetadata);
         }

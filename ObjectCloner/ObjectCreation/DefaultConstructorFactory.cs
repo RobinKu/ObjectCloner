@@ -7,7 +7,7 @@ namespace ObjectCloner.ObjectCreation
 {
     public class DefaultConstructorFactory : IFactory
     {
-        public object CreateNew(CloningMetadata metadata)
+        public object CreateNew(CloningTypeMetadata metadata)
         {
             return Activator.CreateInstance(metadata.TargetType);
         }

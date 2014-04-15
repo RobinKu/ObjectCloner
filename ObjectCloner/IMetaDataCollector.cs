@@ -7,7 +7,7 @@ namespace ObjectCloner
 {
     public interface IMetadataCollector
     {
-        CloningMetadata CreateMetadataForType(Type type);
+        CloningTypeMetadata CreateMetadataForType(Type type);
 
         CloningPropertyMetadata CreateMetadataForProperty(Type type, string propertyName);
 
