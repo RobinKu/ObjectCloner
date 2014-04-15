@@ -14,7 +14,7 @@ namespace ObjectCloner.Actions
             this.value = value;
         }
 
-        public object Clone(Cloner cloner, string propertyName, object valueFrom)
+        public object Clone(CloneScope cloner, string propertyName, object valueFrom)
         {
             return this.value;
         }

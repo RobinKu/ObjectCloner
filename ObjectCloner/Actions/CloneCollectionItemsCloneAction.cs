@@ -8,7 +8,7 @@ namespace ObjectCloner.Actions
 {
     public class CloneCollectionItemsCloneAction : CloneCollectionCloningAction
     {
-        protected override object GetItemValue(Cloner cloner, IList originelList, int index)
+        protected override object GetItemValue(CloneScope cloner, IList originelList, int index)
         {
             object itemValue = base.GetItemValue(cloner, originelList, index);
 

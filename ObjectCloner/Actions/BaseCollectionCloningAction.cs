@@ -9,7 +9,7 @@ namespace ObjectCloner.Actions
 {
     public abstract class BaseCollectionCloningAction : ICloningAction
     {
-        public object Clone(Cloner cloner, string propertyName, object valueFrom)
+        public object Clone(CloneScope cloner, string propertyName, object valueFrom)
         {
             object propertyValue = ReflectionHelper.GetPropertyValue(valueFrom, propertyName);
 
@@ -24,6 +24,6 @@ namespace ObjectCloner.Actions
             return newList;
         }
 
-        protected abstract object GetItemValue(Cloner cloner, IList originalList, int index);
+        protected abstract object GetItemValue(CloneScope cloner, IList originalList, int index);
     }
 }

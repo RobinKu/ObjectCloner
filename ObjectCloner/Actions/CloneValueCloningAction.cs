@@ -8,7 +8,7 @@ namespace ObjectCloner.Actions
 {
     public class CloneValueCloningAction : ICloningAction
     {
-        public object Clone(Cloner cloner, string propertyName, object valueFrom)
+        public object Clone(CloneScope cloner, string propertyName, object valueFrom)
         {
             object propertyValue = ReflectionHelper.GetPropertyValue(valueFrom, propertyName);
 

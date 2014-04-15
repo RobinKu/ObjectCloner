@@ -7,6 +7,6 @@ namespace ObjectCloner
 {
     public interface ICloningAction
     {
-        object Clone(Cloner cloner, string propertyName, object valueFrom);
+        object Clone(CloneScope cloner, string propertyName, object valueFrom);
     }
 }
