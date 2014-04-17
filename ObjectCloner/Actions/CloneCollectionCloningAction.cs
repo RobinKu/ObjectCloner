@@ -8,9 +8,9 @@ namespace ObjectCloner.Actions
 {
     public class CloneCollectionCloningAction : BaseCollectionCloningAction
     {
-        protected override object GetItemValue(CloneScope cloner, IList originelList, int index)
+        protected override object GetItemValue(CloneScope cloner, IList originalList, int index)
         {
-            return originelList[index];
+            return originalList[index];
         }
     }
 }

@@ -43,7 +43,16 @@
     <Compile Include="Actions\CloneCollectionItemsCloneAction.cs" />
     <Compile Include="Actions\CloneValueCloningAction.cs" />
     <Compile Include="Actions\StaticValueAction.cs" />
+    <Compile Include="Annotations\AdoptAttribute.cs" />
+    <Compile Include="Annotations\AnnotationMetadataCollector.cs" />
+    <Compile Include="Annotations\ClonableAttribute.cs" />
+    <Compile Include="Annotations\CloneAttribute.cs" />
+    <Compile Include="Annotations\CloneItemsAttribute.cs" />
+    <Compile Include="Annotations\CloningAttribute.cs" />
+    <Compile Include="Annotations\IgnoreAttribute.cs" />
+    <Compile Include="Annotations\StaticValueAttribute.cs" />
     <Compile Include="Cloner.cs" />
+    <Compile Include="CloneScope.cs" />
     <Compile Include="CloningTypeMetadata.cs" />
     <Compile Include="CloningMetadataCollection.cs" />
     <Compile Include="CloningPropertyMetadata.cs" />
@@ -51,6 +60,7 @@
     <Compile Include="ICloningAction.cs" />
     <Compile Include="IMetadataCollector.cs" />
     <Compile Include="ObjectCreation\DefaultConstructorFactory.cs" />
+    <Compile Include="ObjectCreation\Factory.cs" />
     <Compile Include="ObjectCreation\IFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\ReflectionHelper.cs" />
